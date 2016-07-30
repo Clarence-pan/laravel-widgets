@@ -17,7 +17,7 @@ class TestCase extends PHPUnit_Framework_TestCase
         return '/arrilot/load-widget?'.http_build_query([
             'id'     => $id,
             'name'   => $widgetName,
-            'params' => serialize($widgetParams),
+            'params' => str_replace(['+', '/', '='], ['-', '_', ''], base64_encode(json_encode($widgetParams))),
         ]);
     }
 }

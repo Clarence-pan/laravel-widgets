@@ -155,4 +155,32 @@ abstract class AbstractWidgetFactory
 
         return '<'.$container['element'].' id="'.$this->javascriptFactory->getContainerId().'" '.$container['attributes'].'>'.$content.'</'.$container['element'].'>';
     }
+
+    /**
+     * Serialize params so that it can be passed in URL
+     *
+     * @param array $params
+     * @return string
+     */
+    public function serializeParams($params)
+    {
+        return str_replace(['+', '/', '='], ['-', '_', ''], base64_encode(json_encode($params)));
+    }
+
+    /**
+     * The reverse way of serializeParams -- parse params string to array
+     *
+     * @param string $params
+     * @return array|null
+     */
+    public function unserializeParams($params)
+    {
+        $params = str_replace(['-', '_'], ['+', '/'], $params);
+        $padding = strlen($params) % 4;
+        if ($padding > 0) {
+            $params .= substr('====', $padding);
+        }
+
+        return json_decode(base64_decode($params), true);
+    }
 }
