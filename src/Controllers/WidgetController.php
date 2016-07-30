@@ -24,7 +24,7 @@ class WidgetController extends BaseController
         $widgetName = $request->input('name', '');
         $widgetParams = $factory->unserializeParams($request->input('params', ''));
 
-        return call_user_func_array([$factory, $widgetName], $widgetParams);
+        return call_user_func_array([$factory, $widgetName], (array)$widgetParams);
     }
 
     /**
